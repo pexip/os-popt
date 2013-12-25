@@ -1,11 +1,13 @@
 Source: popt
 Section: devel
 Priority: optional
-Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Maintainer: Pexip AS <packaging@pexip.com>
+XSBC-Pexip-Original-Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
 XSBC-Original-Maintainer: Paul Martin <pm@debian.org>
 Build-Depends: debhelper (>= 8.1.3~), gettext:any, quilt
 Homepage: http://rpm5.org/
 Standards-Version: 3.9.2
+XS-Pexip-Upstream: http://archive.ubuntu.com/ubuntu/ precise
 
 Package: libpopt0
 Architecture: any
