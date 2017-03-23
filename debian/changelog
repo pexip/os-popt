@@ -1,18 +1,75 @@
-popt (1.16-3ubuntu1pexip1) pexip; urgency=low
+popt (1.16-10pexip1) pexip; urgency=low
 
-  * Prepare Pexip packaging
+  * Migrate to Jessie
 
- -- John-Mark Bell <jmb@pexip.com>  Wed, 25 Dec 2013 02:19:34 +0000
+ -- John-Mark Bell <jmb@pexip.com>  Thu, 23 Mar 2017 18:47:03 +0000
 
-popt (1.16-3ubuntu1) precise; urgency=low
+popt (1.16-10) unstable; urgency=low
 
-  * Merge from Debian testing, remaining changes:
-    - Build-depend on gettext:any instead of just gettext, for
-      cross-compilation support.
-  * Move the .pc file to the multiarch directory so libpopt-dev remains
-    Multi-Arch: same.
+  * debian/rules: move dependency on target autoreconf-stamp from 
+    configure (which isn't called) to configure-deb-stamp and 
+    configure-udeb-stamp.
+  * Patches: 757935-autoreconf.patch: add change to Makefile.am of 
+    testit.sh path.
+  * That'll teach me to try to be too clever! (Closes: #757935)
 
- -- Steve Langasek <steve.langasek@ubuntu.com>  Tue, 03 Jan 2012 08:46:51 +0000
+ -- Paul Martin <pm@debian.org>  Mon, 25 Aug 2014 16:15:25 +0100
+
+popt (1.16-9) unstable; urgency=low
+
+  * Patches:
+    + 728596-secure-getenv.patch: update to change #elseif (not recognised
+      by gcc) to #elif.
+    + 757935-autoreconf.patch: remove AM_C_PROTOTYPES from configure.ac
+  * Add dependency on dh-autoreconf, and use that in debian/rules instead
+    of directly using the rules from autotools-dev. (Closes: #757935)
+  * Update to standards version 3.9.5 (no changes)
+
+ -- Paul Martin <pm@debian.org>  Mon, 25 Aug 2014 13:46:30 +0100
+
+popt (1.16-8) unstable; urgency=low
+
+  * Remove build dependency on quilt. (Closes: #709541)
+  * Fix renamed __secure_getenv() function for building with glibc 2.17
+    and later. (Closes: #728596)
+  * Use dh_autotools-dev_updateconfig and dh_autotools-dev_restoreconfig
+    to keep config.sub and config.guess up to date.
+    Build-depend on autotools-dev.
+
+ -- Paul Martin <pm@debian.org>  Sun, 03 Nov 2013 20:33:05 +0000
+
+popt (1.16-7) unstable; urgency=low
+
+  * Fix install directory for the pkgconfig file. (Closes: #658663)
+    Thanks to Christoph Biedl for spotting the oddity.
+    dh_install strikes again!
+
+ -- Paul Martin <pm@debian.org>  Wed, 30 May 2012 22:56:47 +0100
+
+popt (1.16-6) unstable; urgency=low
+
+  * Change dependency on gettext to a version that has a msgfmt that
+    always builds little endian .mo files. (Closes: #670023)
+
+ -- Paul Martin <pm@debian.org>  Tue, 29 May 2012 10:27:53 +0100
+
+popt (1.16-5) unstable; urgency=low
+
+  * Enabled hardened build flags. (Closes: #672835)
+
+ -- Paul Martin <pm@debian.org>  Mon, 14 May 2012 11:23:52 +0100
+
+popt (1.16-4) unstable; urgency=low
+
+  * Multiarch build cleanup take 2. (Closes: #670022)
+  * Ignoring localizations binary endianness versus multiarch problem.
+    That's something for gettext to fix. Thanks for the advice, vorlon.
+    (Ignoring: #670023)
+  * Update to debhelper 9.
+  * Update to standards version 3.9.2
+  * Updated copyright file and converted to machine readable format.
+
+ -- Paul Martin <pm@debian.org>  Wed, 02 May 2012 16:22:09 +0100
 
 popt (1.16-3) unstable; urgency=low
 
@@ -33,15 +90,6 @@ popt (1.16-2) unstable; urgency=low
   * Add a debian/symbols file. (Closes: #551437)
 
  -- Paul Martin <pm@debian.org>  Mon, 19 Dec 2011 13:21:06 +0000
-
-popt (1.16-1ubuntu1) precise; urgency=low
-
-  * Build for multiarch; thanks to Riku Voipio <riku.voipio@iki.fi> for the
-    patch.  Closes: #638447.
-  * Build-depend on gettext:any instead of just gettext, for
-    cross-compilation support.
-
- -- Steve Langasek <steve.langasek@ubuntu.com>  Tue, 08 Nov 2011 15:26:27 -0800
 
 popt (1.16-1) unstable; urgency=low
 
