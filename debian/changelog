@@ -1,3 +1,9 @@
+popt (1.16-10pexip2) pexip; urgency=low
+
+  * Migrate to Stretch
+
+ -- John-Mark Bell <jmb@pexip.com>  Sun, 29 Jul 2018 00:29:47 +0100
+
 popt (1.16-10pexip1) pexip; urgency=low
 
   * Migrate to Jessie
