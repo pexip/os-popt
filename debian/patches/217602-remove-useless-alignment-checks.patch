@@ -1,3 +1,13 @@
+Patch by Nicolas Boullis <nboullis@debian.org> and revised by Paul Martin
+<pm@debian.org>.
+
+In functions poptSaveLong and poptSaveInt, libpopt somwhat asserts that
+{long,}ints are aligned on sizeof({long,}int)-byte boundaries. On m68k
+with gcc-3.3 ints and long ints are 4-byte long, but are aligned on 2-bytes
+boundaries at least when they are part onf a struct.
+
+Simply remove this check, as it is quite useless.
+
 Index: popt-1.16/popt.c
 ===================================================================
 --- popt-1.16.orig/popt.c	2010-05-13 04:57:52.006009545 +0100

@@ -1,1 +1,1 @@
-debian/tmp-udeb/lib*/libpopt.so.*			lib
+usr/lib/*/libpopt.so.*

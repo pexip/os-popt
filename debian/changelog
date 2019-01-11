@@ -1,9 +1,37 @@
+popt (1.16-12) unstable; urgency=medium
+
+  [ Helmut Grohne ]
+  * [0bdae67] Annotate Build-Depends: api-sanity-checker with <!nocheck>.
+    (Closes: #894824)
+
+  [ Michael Jeanson ]
+  * [f3d5d95] Remove redundant override for silent rules
+  * [1301752] Add 'Rules-Requires-Root: no' to control
+  * [6fd0194] Use salsa canonical uri in VCS-Browser
+  * [7fb401b] Bump debhelper compat to 11
+  * [eddc98b] Add Build-Depends-Package to symbols file
+  * [403a5dc] Bump standards version to 4.3.0
+
+ -- Michael Jeanson <mjeanson@debian.org>  Fri, 11 Jan 2019 11:59:20 -0500
+
+popt (1.16-11) unstable; urgency=medium
+
+  * [d9d0d45] Set myself as maintainer
+  * [a9b4695] Modernize packaging
+     + Convert to a full debhelper rules file
+     + Multiple autoreconf fixes
+     + Fix test suite
+     + Add comments to all patches
+     + Add Fedora patches (Closes: #260275)
+
+ -- Michael Jeanson <mjeanson@debian.org>  Tue, 27 Mar 2018 12:05:03 -0400
+
 popt (1.16-10) unstable; urgency=low
 
-  * debian/rules: move dependency on target autoreconf-stamp from 
-    configure (which isn't called) to configure-deb-stamp and 
+  * debian/rules: move dependency on target autoreconf-stamp from
+    configure (which isn't called) to configure-deb-stamp and
     configure-udeb-stamp.
-  * Patches: 757935-autoreconf.patch: add change to Makefile.am of 
+  * Patches: 757935-autoreconf.patch: add change to Makefile.am of
     testit.sh path.
   * That'll teach me to try to be too clever! (Closes: #757935)
 
@@ -105,8 +133,8 @@ popt (1.15-1) unstable; urgency=low
 
 popt (1.14-4) unstable; urgency=low
 
-  * Remove locale data from the udeb, and change the package 
-    description. The debian-installer developers are sure that they 
+  * Remove locale data from the udeb, and change the package
+    description. The debian-installer developers are sure that they
     don't need the localization information, mainly error messages.
     (Thanks to Frans Pop for bringing this to my attention.)
 
@@ -114,7 +142,7 @@ popt (1.14-4) unstable; urgency=low
 
 popt (1.14-3) unstable; urgency=low
 
-  * Add the locale data to the udeb, as per the package description. 
+  * Add the locale data to the udeb, as per the package description.
     (Closes: #485926)
 
  -- Paul Martin <pm@debian.org>  Thu, 12 Jun 2008 17:39:07 +0100
@@ -132,7 +160,7 @@ popt (1.14-1) unstable; urgency=low
     + debian/patches/374797.patch no longer needed
     + Upstream now has po/de.po, po/zh_CN.po
   * Move existing bug fixes into quilt:
-    + debian/patches/217602.patch: Drop alignment check in 
+    + debian/patches/217602.patch: Drop alignment check in
       poptSaveLong() and poptSaveInt()
     + debian/patches/356669.patch: po/ca.po (Catalan).
   * Fix debian/patches/ to allow future source format 3.0 (quilt).
@@ -141,12 +169,12 @@ popt (1.14-1) unstable; urgency=low
     + substvar-source-version-is-deprecated, changed to ${binary:Version}
     + debian-rules-ignores-make-clean-error
   * Updates to CFLAGS in debian/rules to ensure correct build.
-  * Update to standards-version 3.8.0 and debhelper 7, and move to 
+  * Update to standards-version 3.8.0 and debhelper 7, and move to
     section libs.
-  * Note: config.sub and config.guess are whatever upstream supplies. 
-    The previous use of the latest locally installed versions was a 
-    kluge to avoid build problems on new architectures. This is not 
-    compatible with future source packaging formats, and if not carefully 
+  * Note: config.sub and config.guess are whatever upstream supplies.
+    The previous use of the latest locally installed versions was a
+    kluge to avoid build problems on new architectures. This is not
+    compatible with future source packaging formats, and if not carefully
     handled causes build problems when autotools is not installed.
   * Accommodate cross-compilation. (Closes: #282913)
 
@@ -154,18 +182,18 @@ popt (1.14-1) unstable; urgency=low
 
 popt (1.10-3) unstable; urgency=low
 
-  * The lib64 problem remains, as an rpath problem. Patch 374797.patch 
-    changes Makefile.in so that ./configure doesn't put the libraries in 
+  * The lib64 problem remains, as an rpath problem. Patch 374797.patch
+    changes Makefile.in so that ./configure doesn't put the libraries in
     the wrong place or give them the wrong rpath. (Closes: #374797)
-    PS. This fix is fragile to any of the autoconf files (eg. 
+    PS. This fix is fragile to any of the autoconf files (eg.
     configure.ac or Makefile.ac) being touched or modified.
 
  -- Paul Martin <pm@debian.org>  Tue,  8 Aug 2006 01:41:49 +0100
 
 popt (1.10-2) unstable; urgency=low
 
-  * Fix building on 64-bit architectures where the autoconf tools want 
-    to put things in /usr/lib64 instead of /usr/lib. Thanks to Roberto 
+  * Fix building on 64-bit architectures where the autoconf tools want
+    to put things in /usr/lib64 instead of /usr/lib. Thanks to Roberto
     Pariset for the advice and Simon Huggins for the patch.
     (Closes: #370414)
 
@@ -210,8 +238,8 @@ popt (1.7-5) unstable; urgency=high
 popt (1.7-4) unstable; urgency=low
 
   * Missed alignment check in poptSaveInt(). (Closes: #217602)
-  * Add shlibdeps check for 1.7-4 if building on m68k, due to 
-    brokenness with older versions of libpopt0 (the alignment checks). 
+  * Add shlibdeps check for 1.7-4 if building on m68k, due to
+    brokenness with older versions of libpopt0 (the alignment checks).
     Other archs may be broken, too. Please make yourselves known if so.
 
  -- Paul Martin <pm@debian.org>  Thu, 20 Nov 2003 19:50:10 +0000
@@ -228,7 +256,7 @@ popt (1.7-2) unstable; urgency=low
 
   * The "Apart from that, how was the play, Mrs Lincoln?" release.
   * Acknowledging NMU. (Closes: #195072)
-    It got unstuck because the pattern it was matching for was X.X.X, 
+    It got unstuck because the pattern it was matching for was X.X.X,
     and this version is just X.X. Filip's method is much cleaner.
 
  -- Paul Martin <pm@debian.org>  Thu, 29 May 2003 20:24:32 +0100
@@ -279,15 +307,15 @@ popt (1.6.2-7) unstable; urgency=HIGH
 popt (1.6.2-6) unstable; urgency=HIGH
 
   * Modified depends in libpopt-dev to depend on
-    libpopt0 (= ${Source-Version}). Previous uploads would allow 
+    libpopt0 (= ${Source-Version}). Previous uploads would allow
     libpopt0 to get out of step with libpopt-dev, causing compiles to
-    fail if the user starts from having 1.5-1 installed, and only 
-    upgrades libpopt0. This is a violation of a "should" policy 
+    fail if the user starts from having 1.5-1 installed, and only
+    upgrades libpopt0. This is a violation of a "should" policy
     directive.  (Closes: #125685)
   * Removed redundant ldconfig call from debian/libpopt0.postinst, as
     debhelper does it for us. Fixes lintian postinst-unsafe-ldconfig
     warning.
-  * Uploading with urgency=high, since this upload contains 
+  * Uploading with urgency=high, since this upload contains
     only minimal, "important" bugfixes.
 
  -- Paul Martin <pm@debian.org>  Wed, 19 Dec 2001 15:59:03 +0000
@@ -408,13 +436,13 @@ popt (1.3-0.1) unstable; urgency=low
 popt (1.1.1-3) unstable; urgency=low
 
   * Now popt builds properly from clean sources. Fixes: 25581, 26277.
-    
+
  -- Enrique Zanardi <ezanard@debian.org>  Tue,  1 Sep 1998 11:26:54 +0100
 
 popt (1.1.1-2) unstable; urgency=low
 
   * Don't strip libpopt.a
-    
+
  -- Enrique Zanardi <ezanard@debian.org>  Thu, 30 Jul 1998 18:37:27 +0100
 
 popt (1.1.1-1) unstable; urgency=low

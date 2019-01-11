@@ -1,9 +1,9 @@
-Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: popt
 Upstream-Contact: Jeff Johnson <jbj@rpm5.org>
 Source: http://rpm5.org/files/popt/
 Comment:
- popt was originally written by Erik Troan when he was with RedHat. It's 
+ popt was originally written by Erik Troan when he was with RedHat. It's
  now maintained as part of Fedora.
 
 Files: *
@@ -34,6 +34,7 @@ License: X-Consortium
 Files: debian/*
 Copyright: GNU copyright 1997 to 1999 by Joey Hess
            2012, Paul Martin <pm@debian.org>
+           2018, Michael Jeanson <mjeanson@debian.org>
 License: GPL-2+
  This program is free software; you can redistribute it
  and/or modify it under the terms of the GNU General Public

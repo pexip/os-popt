@@ -1,7 +1,13 @@
-Index: popt-1.16/popt.c
-===================================================================
---- popt-1.16.orig/popt.c	2010-05-13 04:57:46.853009777 +0100
-+++ popt-1.16/popt.c	2010-05-13 04:57:52.006009545 +0100
+Patch by Richard Levitte - VMS Whacker <richard@levitte.org>
+
+If poptStuffArgs() is used twice with the same context, it will invariably
+cause memory corruption and possibly memory leaks or a crash.
+
+Change the allocation of leftOvers so it adapts to the input on the fly
+instead of trying to pre-allocate it in one go.
+
+--- a/popt.c
++++ b/popt.c
 @@ -184,6 +184,7 @@
  	con->os->next = 1;		/* skip argv[0] */
  
@@ -10,11 +16,13 @@ Index: popt-1.16/popt.c
  /*@-dependenttrans -assignexpose@*/	/* FIX: W2DO? */
      con->options = options;
  /*@=dependenttrans =assignexpose@*/
-@@ -1358,7 +1359,19 @@
+@@ -1357,8 +1358,21 @@
+ 		    con->os->nextArg = xstrdup(origOptString);
  		    return 0;
  		}
- 		if (con->leftovers != NULL)	/* XXX can't happen */
+-		if (con->leftovers != NULL)	/* XXX can't happen */
 -		    con->leftovers[con->numLeftovers++] = origOptString;
++		if (con->leftovers != NULL) {	/* XXX can't happen */
 +		    /* One might think we can never overflow the leftovers
 +		       array.  Actually, that's true, as long as you don't
 +		       use poptStuffArgs()... */
@@ -28,10 +36,11 @@ Index: popt-1.16/popt.c
 +			= xstrdup(origOptString); /* so a free of a stuffed
 +						     argv doesn't give us a
 +						     dangling pointer */
++		}
  		continue;
  	    }
  
-@@ -1612,6 +1625,8 @@
+@@ -1612,6 +1626,8 @@
  
  poptContext poptFreeContext(poptContext con)
  {
@@ -40,7 +49,7 @@ Index: popt-1.16/popt.c
      if (con == NULL) return con;
      poptResetContext(con);
      con->os->argb = _free(con->os->argb);
-@@ -1622,7 +1637,11 @@
+@@ -1622,7 +1638,11 @@
      con->execs = poptFreeItems(con->execs, con->numExecs);
      con->numExecs = 0;
  
@@ -52,10 +61,8 @@ Index: popt-1.16/popt.c
      con->finalArgv = _free(con->finalArgv);
      con->appName = _free(con->appName);
      con->otherHelp = _free(con->otherHelp);
-Index: popt-1.16/poptint.h
-===================================================================
---- popt-1.16.orig/poptint.h	2010-05-13 04:57:46.878010140 +0100
-+++ popt-1.16/poptint.h	2010-05-13 04:57:52.008009414 +0100
+--- a/poptint.h
++++ b/poptint.h
 @@ -119,6 +119,7 @@
  /*@owned@*/ /*@null@*/
      poptArgv leftovers;
