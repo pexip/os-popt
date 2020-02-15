@@ -6,7 +6,7 @@ XSBC-Pexip-Original-Maintainer: Paul Martin <pm@debian.org>
 Build-Depends: debhelper (>> 9), gettext (>= 0.18.1.1-8), dh-autoreconf
 Homepage: http://rpm5.org/
 Standards-Version: 3.9.5
-XS-Pexip-Upstream: http://ftp.debian.org/debian/ stretch
+XS-Pexip-Upstream: http://ftp.debian.org/debian/ buster
 
 Package: libpopt0
 Architecture: any
