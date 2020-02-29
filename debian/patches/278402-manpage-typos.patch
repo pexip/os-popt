@@ -1,3 +1,11 @@
+Patch by Carl Henrik Lunde <chlunde+news+@ping.uio.no>
+
+There are some minor typos in the manual page:
+ - "char" can be unsigned
+ - exit(3) is defined in stdlib.h
+ - \n must be escaped in nroff
+ - poptGetArg returns a pointer to const char
+
 Index: popt-1.16/popt.3
 ===================================================================
 --- popt-1.16.orig/popt.3	2010-05-13 04:58:04.357009234 +0100
