@@ -1,3 +1,47 @@
+popt (1.18-2) unstable; urgency=medium
+
+  [ Debian Janitor ]
+  * [ad90dc7] Add upstream metadata file
+  * [7400917] Drop unnecessary dependency on dh-autoreconf.
+  * [62b862e] Fix day-of-week for changelog entries 1.0-3, 1.0-2.
+
+  [ Christian Göttsche ]
+  * [d38af36] Use modern salsa-ci configuration
+  * [4673e05] Add simple autopkgtest check
+
+ -- Michael Jeanson <mjeanson@debian.org>  Tue, 03 Nov 2020 11:05:47 -0500
+
+popt (1.18-1) unstable; urgency=medium
+
+  * [6244dc9] A new upstream emerges (Closes: #933635)
+  * [26d03e9] New upstream version 1.18
+  * [115f26b] Refresh patches for 1.18
+  * [fd768b0] Set gettext builddep to >= 0.19.8
+  * [b25c3bd] Drop builddep on api-sanity-checker
+  * [b20ebd7] Examples moved to tests/
+  * [76428e7] Move to debhelper 12
+  * [f32d74b] Bump standards version to 4.5.0
+  * [39d200c] Use dh_installman
+
+ -- Michael Jeanson <mjeanson@debian.org>  Fri, 26 Jun 2020 12:12:05 -0400
+
+popt (1.16-14) unstable; urgency=medium
+
+  * [6cadc21] Revert memory leak fix that causes regression, more testing required
+
+ -- Michael Jeanson <mjeanson@debian.org>  Mon, 21 Oct 2019 11:00:01 -0400
+
+popt (1.16-13) unstable; urgency=medium
+
+  * [f02a155] Add Salsa CI configuration
+  * [5097b39] Fix memory leak in leftovers patche (Closes: #941814)
+  * [000719b] Bump standards version to 4.4.1
+  * [6b87de3] Set minimum gettext version to 0.19.8 (Closes: #941778)
+  * [e0d2fe3] Remove ancient conflicts from 2000
+  * [4edac2c] Add examples to libpopt-dev (Closes: #254321)
+
+ -- Michael Jeanson <mjeanson@debian.org>  Wed, 16 Oct 2019 16:11:41 -0400
+
 popt (1.16-12) unstable; urgency=medium
 
   [ Helmut Grohne ]
@@ -462,13 +506,13 @@ popt (1.0-3) unstable; urgency=low
 
   * Defines the dependency on libc*-dev at build-time, fixes: Bug#17208
 
- -- Enrique Zanardi <ezanardi@molec1.dfis.ull.es>  Sat, 30 Jan 1998 20:10:12 +0000
+ -- Enrique Zanardi <ezanardi@molec1.dfis.ull.es>  Fri, 30 Jan 1998 20:10:12 +0000
 
 popt (1.0-2) unstable; urgency=low
 
   * Added patch by Bruce Perens to use "const" in poptOption structs.
 
- -- Enrique Zanardi <ezanardi@molec1.dfis.ull.es>  Mon,  7 Jan 1998 12:15:24 +0000
+ -- Enrique Zanardi <ezanardi@molec1.dfis.ull.es>  Wed, 07 Jan 1998 12:15:24 +0000
 
 popt (1.0-1) unstable; urgency=low
 

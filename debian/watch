@@ -1,2 +1,2 @@
 version=3
-http://rpm5.org/files/popt/popt-([\d\.]+).tar.gz
+https://ftp.osuosl.org/pub/rpm/popt/releases/popt-1.x/popt-([\d\.]+).tar.gz

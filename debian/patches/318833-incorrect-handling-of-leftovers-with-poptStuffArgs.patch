@@ -6,17 +6,17 @@ cause memory corruption and possibly memory leaks or a crash.
 Change the allocation of leftOvers so it adapts to the input on the fly
 instead of trying to pre-allocate it in one go.
 
---- a/popt.c
-+++ b/popt.c
-@@ -184,6 +184,7 @@
+--- a/src/popt.c
++++ b/src/popt.c
+@@ -168,6 +168,7 @@
  	con->os->next = 1;		/* skip argv[0] */
  
      con->leftovers = calloc( (size_t)(argc + 1), sizeof(*con->leftovers) );
 +    con->allocLeftovers = argc + 1;
- /*@-dependenttrans -assignexpose@*/	/* FIX: W2DO? */
      con->options = options;
- /*@=dependenttrans =assignexpose@*/
-@@ -1357,8 +1358,21 @@
+     con->aliases = NULL;
+     con->numAliases = 0;
+@@ -1269,8 +1270,21 @@
  		    con->os->nextArg = xstrdup(origOptString);
  		    return 0;
  		}
@@ -40,7 +40,7 @@ instead of trying to pre-allocate it in one go.
  		continue;
  	    }
  
-@@ -1612,6 +1626,8 @@
+@@ -1519,6 +1533,8 @@
  
  poptContext poptFreeContext(poptContext con)
  {
@@ -48,8 +48,8 @@ instead of trying to pre-allocate it in one go.
 +
      if (con == NULL) return con;
      poptResetContext(con);
-     con->os->argb = _free(con->os->argb);
-@@ -1622,7 +1638,11 @@
+ 
+@@ -1528,7 +1544,11 @@
      con->execs = poptFreeItems(con->execs, con->numExecs);
      con->numExecs = 0;
  
@@ -61,13 +61,13 @@ instead of trying to pre-allocate it in one go.
      con->finalArgv = _free(con->finalArgv);
      con->appName = _free(con->appName);
      con->otherHelp = _free(con->otherHelp);
---- a/poptint.h
-+++ b/poptint.h
-@@ -119,6 +119,7 @@
- /*@owned@*/ /*@null@*/
+--- a/src/poptint.h
++++ b/src/poptint.h
+@@ -94,6 +94,7 @@
+     struct optionStackEntry * os;
      poptArgv leftovers;
      int numLeftovers;
 +    int allocLeftovers;
      int nextLeftover;
- /*@keep@*/
      const struct poptOption * options;
+     int restLeftover;

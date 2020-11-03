@@ -2,4 +2,3 @@ usr/include/popt.h
 usr/lib/*/libpopt.a
 usr/lib/*/libpopt.so
 usr/lib/*/pkgconfig
-usr/share/man/man3/popt.3

@@ -3,12 +3,12 @@ auxiliary files.
 
 --- a/configure.ac
 +++ b/configure.ac
-@@ -24,7 +24,7 @@
- AC_PROG_CC
+@@ -14,7 +14,7 @@
+ AM_PROG_AR
  
  AC_PROG_INSTALL
 -AC_PROG_LIBTOOL
 +LT_INIT
  
- dnl if CC is gcc, we can rebuild the dependencies (since the depend rule
- dnl requires gcc).  If it's not, don't rebuild dependencies -- use what was
+ AC_SYS_LARGEFILE
+ 
