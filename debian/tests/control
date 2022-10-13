@@ -1,2 +1,3 @@
 Tests: simple-test-compile
-Depends: @, build-essential
+Depends: build-essential,
+         @,
