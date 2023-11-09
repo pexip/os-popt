@@ -9,7 +9,7 @@ Rules-Requires-Root: no
 Vcs-Git: https://salsa.debian.org/debian/popt.git
 Vcs-Browser: https://salsa.debian.org/debian/popt
 Homepage: https://github.com/rpm-software-management/popt
-XS-Pexip-Upstream: http://deb.debian.org/debian/ bullseye
+XS-Pexip-Upstream: http://deb.debian.org/debian/ bookworm
 
 Package: libpopt0
 Architecture: any
