@@ -1,2 +1,4 @@
-version=3
+version=4
+opts=dversionmangle=s/\+dfsg\d*$//,\
+repacksuffix=+dfsg \
 https://ftp.osuosl.org/pub/rpm/popt/releases/popt-1.x/popt-([\d\.]+).tar.gz

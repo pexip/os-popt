@@ -1,6 +1,6 @@
-# generated automatically by aclocal 1.16.1 -*- Autoconf -*-
+# generated automatically by aclocal 1.16.5 -*- Autoconf -*-
 
-# Copyright (C) 1996-2018 Free Software Foundation, Inc.
+# Copyright (C) 1996-2021 Free Software Foundation, Inc.
 
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -14,13 +14,400 @@
 m4_ifndef([AC_CONFIG_MACRO_DIRS], [m4_defun([_AM_CONFIG_MACRO_DIRS], [])m4_defun([AC_CONFIG_MACRO_DIRS], [_AM_CONFIG_MACRO_DIRS($@)])])
 m4_ifndef([AC_AUTOCONF_VERSION],
   [m4_copy([m4_PACKAGE_VERSION], [AC_AUTOCONF_VERSION])])dnl
-m4_if(m4_defn([AC_AUTOCONF_VERSION]), [2.69],,
-[m4_warning([this file was generated for autoconf 2.69.
+m4_if(m4_defn([AC_AUTOCONF_VERSION]), [2.71],,
+[m4_warning([this file was generated for autoconf 2.71.
 You have another version of autoconf.  It may work, but is not guaranteed to.
 If you have problems, you may need to regenerate the build system entirely.
 To do so, use the procedure documented by the package, typically 'autoreconf'.])])
 
-# Copyright (C) 2002-2018 Free Software Foundation, Inc.
+# gettext.m4 serial 71 (gettext-0.20.2)
+dnl Copyright (C) 1995-2014, 2016, 2018-2020 Free Software Foundation, Inc.
+dnl This file is free software; the Free Software Foundation
+dnl gives unlimited permission to copy and/or distribute it,
+dnl with or without modifications, as long as this notice is preserved.
+dnl
+dnl This file can be used in projects which are not available under
+dnl the GNU General Public License or the GNU Lesser General Public
+dnl License but which still want to provide support for the GNU gettext
+dnl functionality.
+dnl Please note that the actual code of the GNU gettext library is covered
+dnl by the GNU Lesser General Public License, and the rest of the GNU
+dnl gettext package is covered by the GNU General Public License.
+dnl They are *not* in the public domain.
+
+dnl Authors:
+dnl   Ulrich Drepper <drepper@cygnus.com>, 1995-2000.
+dnl   Bruno Haible <haible@clisp.cons.org>, 2000-2006, 2008-2010.
+
+dnl Macro to add for using GNU gettext.
+
+dnl Usage: AM_GNU_GETTEXT([INTLSYMBOL], [NEEDSYMBOL], [INTLDIR]).
+dnl INTLSYMBOL must be one of 'external', 'use-libtool'.
+dnl    INTLSYMBOL should be 'external' for packages other than GNU gettext, and
+dnl    'use-libtool' for the packages 'gettext-runtime' and 'gettext-tools'.
+dnl    If INTLSYMBOL is 'use-libtool', then a libtool library
+dnl    $(top_builddir)/intl/libintl.la will be created (shared and/or static,
+dnl    depending on --{enable,disable}-{shared,static} and on the presence of
+dnl    AM-DISABLE-SHARED).
+dnl If NEEDSYMBOL is specified and is 'need-ngettext', then GNU gettext
+dnl    implementations (in libc or libintl) without the ngettext() function
+dnl    will be ignored.  If NEEDSYMBOL is specified and is
+dnl    'need-formatstring-macros', then GNU gettext implementations that don't
+dnl    support the ISO C 99 <inttypes.h> formatstring macros will be ignored.
+dnl INTLDIR is used to find the intl libraries.  If empty,
+dnl    the value '$(top_builddir)/intl/' is used.
+dnl
+dnl The result of the configuration is one of three cases:
+dnl 1) GNU gettext, as included in the intl subdirectory, will be compiled
+dnl    and used.
+dnl    Catalog format: GNU --> install in $(datadir)
+dnl    Catalog extension: .mo after installation, .gmo in source tree
+dnl 2) GNU gettext has been found in the system's C library.
+dnl    Catalog format: GNU --> install in $(datadir)
+dnl    Catalog extension: .mo after installation, .gmo in source tree
+dnl 3) No internationalization, always use English msgid.
+dnl    Catalog format: none
+dnl    Catalog extension: none
+dnl If INTLSYMBOL is 'external', only cases 2 and 3 can occur.
+dnl The use of .gmo is historical (it was needed to avoid overwriting the
+dnl GNU format catalogs when building on a platform with an X/Open gettext),
+dnl but we keep it in order not to force irrelevant filename changes on the
+dnl maintainers.
+dnl
+AC_DEFUN([AM_GNU_GETTEXT],
+[
+  dnl Argument checking.
+  ifelse([$1], [], , [ifelse([$1], [external], , [ifelse([$1], [use-libtool], ,
+    [errprint([ERROR: invalid first argument to AM_GNU_GETTEXT
+])])])])
+  ifelse(ifelse([$1], [], [old])[]ifelse([$1], [no-libtool], [old]), [old],
+    [errprint([ERROR: Use of AM_GNU_GETTEXT without [external] argument is no longer supported.
+])])
+  ifelse([$2], [], , [ifelse([$2], [need-ngettext], , [ifelse([$2], [need-formatstring-macros], ,
+    [errprint([ERROR: invalid second argument to AM_GNU_GETTEXT
+])])])])
+  define([gt_included_intl],
+    ifelse([$1], [external], [no], [yes]))
+  gt_NEEDS_INIT
+  AM_GNU_GETTEXT_NEED([$2])
+
+  AC_REQUIRE([AM_PO_SUBDIRS])dnl
+  ifelse(gt_included_intl, yes, [
+    AC_REQUIRE([AM_INTL_SUBDIR])dnl
+  ])
+
+  dnl Prerequisites of AC_LIB_LINKFLAGS_BODY.
+  AC_REQUIRE([AC_LIB_PREPARE_PREFIX])
+  AC_REQUIRE([AC_LIB_RPATH])
+
+  dnl Sometimes libintl requires libiconv, so first search for libiconv.
+  dnl Ideally we would do this search only after the
+  dnl      if test "$USE_NLS" = "yes"; then
+  dnl        if { eval "gt_val=\$$gt_func_gnugettext_libc"; test "$gt_val" != "yes"; }; then
+  dnl tests. But if configure.in invokes AM_ICONV after AM_GNU_GETTEXT
+  dnl the configure script would need to contain the same shell code
+  dnl again, outside any 'if'. There are two solutions:
+  dnl - Invoke AM_ICONV_LINKFLAGS_BODY here, outside any 'if'.
+  dnl - Control the expansions in more detail using AC_PROVIDE_IFELSE.
+  dnl Since AC_PROVIDE_IFELSE is not documented, we avoid it.
+  ifelse(gt_included_intl, yes, , [
+    AC_REQUIRE([AM_ICONV_LINKFLAGS_BODY])
+  ])
+
+  dnl Sometimes, on Mac OS X, libintl requires linking with CoreFoundation.
+  gt_INTL_MACOSX
+
+  dnl Set USE_NLS.
+  AC_REQUIRE([AM_NLS])
+
+  ifelse(gt_included_intl, yes, [
+    BUILD_INCLUDED_LIBINTL=no
+    USE_INCLUDED_LIBINTL=no
+  ])
+  LIBINTL=
+  LTLIBINTL=
+  POSUB=
+
+  dnl Add a version number to the cache macros.
+  case " $gt_needs " in
+    *" need-formatstring-macros "*) gt_api_version=3 ;;
+    *" need-ngettext "*) gt_api_version=2 ;;
+    *) gt_api_version=1 ;;
+  esac
+  gt_func_gnugettext_libc="gt_cv_func_gnugettext${gt_api_version}_libc"
+  gt_func_gnugettext_libintl="gt_cv_func_gnugettext${gt_api_version}_libintl"
+
+  dnl If we use NLS figure out what method
+  if test "$USE_NLS" = "yes"; then
+    gt_use_preinstalled_gnugettext=no
+    ifelse(gt_included_intl, yes, [
+      AC_MSG_CHECKING([whether included gettext is requested])
+      AC_ARG_WITH([included-gettext],
+        [  --with-included-gettext use the GNU gettext library included here],
+        nls_cv_force_use_gnu_gettext=$withval,
+        nls_cv_force_use_gnu_gettext=no)
+      AC_MSG_RESULT([$nls_cv_force_use_gnu_gettext])
+
+      nls_cv_use_gnu_gettext="$nls_cv_force_use_gnu_gettext"
+      if test "$nls_cv_force_use_gnu_gettext" != "yes"; then
+    ])
+        dnl User does not insist on using GNU NLS library.  Figure out what
+        dnl to use.  If GNU gettext is available we use this.  Else we have
+        dnl to fall back to GNU NLS library.
+
+        if test $gt_api_version -ge 3; then
+          gt_revision_test_code='
+#ifndef __GNU_GETTEXT_SUPPORTED_REVISION
+#define __GNU_GETTEXT_SUPPORTED_REVISION(major) ((major) == 0 ? 0 : -1)
+#endif
+changequote(,)dnl
+typedef int array [2 * (__GNU_GETTEXT_SUPPORTED_REVISION(0) >= 1) - 1];
+changequote([,])dnl
+'
+        else
+          gt_revision_test_code=
+        fi
+        if test $gt_api_version -ge 2; then
+          gt_expression_test_code=' + * ngettext ("", "", 0)'
+        else
+          gt_expression_test_code=
+        fi
+
+        AC_CACHE_CHECK([for GNU gettext in libc], [$gt_func_gnugettext_libc],
+         [AC_LINK_IFELSE(
+            [AC_LANG_PROGRAM(
+               [[
+#include <libintl.h>
+#ifndef __GNU_GETTEXT_SUPPORTED_REVISION
+extern int _nl_msg_cat_cntr;
+extern int *_nl_domain_bindings;
+#define __GNU_GETTEXT_SYMBOL_EXPRESSION (_nl_msg_cat_cntr + *_nl_domain_bindings)
+#else
+#define __GNU_GETTEXT_SYMBOL_EXPRESSION 0
+#endif
+$gt_revision_test_code
+               ]],
+               [[
+bindtextdomain ("", "");
+return * gettext ("")$gt_expression_test_code + __GNU_GETTEXT_SYMBOL_EXPRESSION
+               ]])],
+            [eval "$gt_func_gnugettext_libc=yes"],
+            [eval "$gt_func_gnugettext_libc=no"])])
+
+        if { eval "gt_val=\$$gt_func_gnugettext_libc"; test "$gt_val" != "yes"; }; then
+          dnl Sometimes libintl requires libiconv, so first search for libiconv.
+          ifelse(gt_included_intl, yes, , [
+            AM_ICONV_LINK
+          ])
+          dnl Search for libintl and define LIBINTL, LTLIBINTL and INCINTL
+          dnl accordingly. Don't use AC_LIB_LINKFLAGS_BODY([intl],[iconv])
+          dnl because that would add "-liconv" to LIBINTL and LTLIBINTL
+          dnl even if libiconv doesn't exist.
+          AC_LIB_LINKFLAGS_BODY([intl])
+          AC_CACHE_CHECK([for GNU gettext in libintl],
+            [$gt_func_gnugettext_libintl],
+           [gt_save_CPPFLAGS="$CPPFLAGS"
+            CPPFLAGS="$CPPFLAGS $INCINTL"
+            gt_save_LIBS="$LIBS"
+            LIBS="$LIBS $LIBINTL"
+            dnl Now see whether libintl exists and does not depend on libiconv.
+            AC_LINK_IFELSE(
+              [AC_LANG_PROGRAM(
+                 [[
+#include <libintl.h>
+#ifndef __GNU_GETTEXT_SUPPORTED_REVISION
+extern int _nl_msg_cat_cntr;
+extern
+#ifdef __cplusplus
+"C"
+#endif
+const char *_nl_expand_alias (const char *);
+#define __GNU_GETTEXT_SYMBOL_EXPRESSION (_nl_msg_cat_cntr + *_nl_expand_alias (""))
+#else
+#define __GNU_GETTEXT_SYMBOL_EXPRESSION 0
+#endif
+$gt_revision_test_code
+                 ]],
+                 [[
+bindtextdomain ("", "");
+return * gettext ("")$gt_expression_test_code + __GNU_GETTEXT_SYMBOL_EXPRESSION
+                 ]])],
+              [eval "$gt_func_gnugettext_libintl=yes"],
+              [eval "$gt_func_gnugettext_libintl=no"])
+            dnl Now see whether libintl exists and depends on libiconv.
+            if { eval "gt_val=\$$gt_func_gnugettext_libintl"; test "$gt_val" != yes; } && test -n "$LIBICONV"; then
+              LIBS="$LIBS $LIBICONV"
+              AC_LINK_IFELSE(
+                [AC_LANG_PROGRAM(
+                   [[
+#include <libintl.h>
+#ifndef __GNU_GETTEXT_SUPPORTED_REVISION
+extern int _nl_msg_cat_cntr;
+extern
+#ifdef __cplusplus
+"C"
+#endif
+const char *_nl_expand_alias (const char *);
+#define __GNU_GETTEXT_SYMBOL_EXPRESSION (_nl_msg_cat_cntr + *_nl_expand_alias (""))
+#else
+#define __GNU_GETTEXT_SYMBOL_EXPRESSION 0
+#endif
+$gt_revision_test_code
+                   ]],
+                   [[
+bindtextdomain ("", "");
+return * gettext ("")$gt_expression_test_code + __GNU_GETTEXT_SYMBOL_EXPRESSION
+                   ]])],
+                [LIBINTL="$LIBINTL $LIBICONV"
+                 LTLIBINTL="$LTLIBINTL $LTLIBICONV"
+                 eval "$gt_func_gnugettext_libintl=yes"
+                ])
+            fi
+            CPPFLAGS="$gt_save_CPPFLAGS"
+            LIBS="$gt_save_LIBS"])
+        fi
+
+        dnl If an already present or preinstalled GNU gettext() is found,
+        dnl use it.  But if this macro is used in GNU gettext, and GNU
+        dnl gettext is already preinstalled in libintl, we update this
+        dnl libintl.  (Cf. the install rule in intl/Makefile.in.)
+        if { eval "gt_val=\$$gt_func_gnugettext_libc"; test "$gt_val" = "yes"; } \
+           || { { eval "gt_val=\$$gt_func_gnugettext_libintl"; test "$gt_val" = "yes"; } \
+                && test "$PACKAGE" != gettext-runtime \
+                && test "$PACKAGE" != gettext-tools; }; then
+          gt_use_preinstalled_gnugettext=yes
+        else
+          dnl Reset the values set by searching for libintl.
+          LIBINTL=
+          LTLIBINTL=
+          INCINTL=
+        fi
+
+    ifelse(gt_included_intl, yes, [
+        if test "$gt_use_preinstalled_gnugettext" != "yes"; then
+          dnl GNU gettext is not found in the C library.
+          dnl Fall back on included GNU gettext library.
+          nls_cv_use_gnu_gettext=yes
+        fi
+      fi
+
+      if test "$nls_cv_use_gnu_gettext" = "yes"; then
+        dnl Mark actions used to generate GNU NLS library.
+        BUILD_INCLUDED_LIBINTL=yes
+        USE_INCLUDED_LIBINTL=yes
+        LIBINTL="ifelse([$3],[],\${top_builddir}/intl,[$3])/libintl.la $LIBICONV $LIBTHREAD"
+        LTLIBINTL="ifelse([$3],[],\${top_builddir}/intl,[$3])/libintl.la $LTLIBICONV $LTLIBTHREAD"
+        LIBS=`echo " $LIBS " | sed -e 's/ -lintl / /' -e 's/^ //' -e 's/ $//'`
+      fi
+
+      CATOBJEXT=
+      if test "$gt_use_preinstalled_gnugettext" = "yes" \
+         || test "$nls_cv_use_gnu_gettext" = "yes"; then
+        dnl Mark actions to use GNU gettext tools.
+        CATOBJEXT=.gmo
+      fi
+    ])
+
+    if test -n "$INTL_MACOSX_LIBS"; then
+      if test "$gt_use_preinstalled_gnugettext" = "yes" \
+         || test "$nls_cv_use_gnu_gettext" = "yes"; then
+        dnl Some extra flags are needed during linking.
+        LIBINTL="$LIBINTL $INTL_MACOSX_LIBS"
+        LTLIBINTL="$LTLIBINTL $INTL_MACOSX_LIBS"
+      fi
+    fi
+
+    if test "$gt_use_preinstalled_gnugettext" = "yes" \
+       || test "$nls_cv_use_gnu_gettext" = "yes"; then
+      AC_DEFINE([ENABLE_NLS], [1],
+        [Define to 1 if translation of program messages to the user's native language
+   is requested.])
+    else
+      USE_NLS=no
+    fi
+  fi
+
+  AC_MSG_CHECKING([whether to use NLS])
+  AC_MSG_RESULT([$USE_NLS])
+  if test "$USE_NLS" = "yes"; then
+    AC_MSG_CHECKING([where the gettext function comes from])
+    if test "$gt_use_preinstalled_gnugettext" = "yes"; then
+      if { eval "gt_val=\$$gt_func_gnugettext_libintl"; test "$gt_val" = "yes"; }; then
+        gt_source="external libintl"
+      else
+        gt_source="libc"
+      fi
+    else
+      gt_source="included intl directory"
+    fi
+    AC_MSG_RESULT([$gt_source])
+  fi
+
+  if test "$USE_NLS" = "yes"; then
+
+    if test "$gt_use_preinstalled_gnugettext" = "yes"; then
+      if { eval "gt_val=\$$gt_func_gnugettext_libintl"; test "$gt_val" = "yes"; }; then
+        AC_MSG_CHECKING([how to link with libintl])
+        AC_MSG_RESULT([$LIBINTL])
+        AC_LIB_APPENDTOVAR([CPPFLAGS], [$INCINTL])
+      fi
+
+      dnl For backward compatibility. Some packages may be using this.
+      AC_DEFINE([HAVE_GETTEXT], [1],
+       [Define if the GNU gettext() function is already present or preinstalled.])
+      AC_DEFINE([HAVE_DCGETTEXT], [1],
+       [Define if the GNU dcgettext() function is already present or preinstalled.])
+    fi
+
+    dnl We need to process the po/ directory.
+    POSUB=po
+  fi
+
+  ifelse(gt_included_intl, yes, [
+    dnl In GNU gettext we have to set BUILD_INCLUDED_LIBINTL to 'yes'
+    dnl because some of the testsuite requires it.
+    BUILD_INCLUDED_LIBINTL=yes
+
+    dnl Make all variables we use known to autoconf.
+    AC_SUBST([BUILD_INCLUDED_LIBINTL])
+    AC_SUBST([USE_INCLUDED_LIBINTL])
+    AC_SUBST([CATOBJEXT])
+  ])
+
+  dnl For backward compatibility. Some Makefiles may be using this.
+  INTLLIBS="$LIBINTL"
+  AC_SUBST([INTLLIBS])
+
+  dnl Make all documented variables known to autoconf.
+  AC_SUBST([LIBINTL])
+  AC_SUBST([LTLIBINTL])
+  AC_SUBST([POSUB])
+])
+
+
+dnl gt_NEEDS_INIT ensures that the gt_needs variable is initialized.
+m4_define([gt_NEEDS_INIT],
+[
+  m4_divert_text([DEFAULTS], [gt_needs=])
+  m4_define([gt_NEEDS_INIT], [])
+])
+
+
+dnl Usage: AM_GNU_GETTEXT_NEED([NEEDSYMBOL])
+AC_DEFUN([AM_GNU_GETTEXT_NEED],
+[
+  m4_divert_text([INIT_PREPARE], [gt_needs="$gt_needs $1"])
+])
+
+
+dnl Usage: AM_GNU_GETTEXT_VERSION([gettext-version])
+AC_DEFUN([AM_GNU_GETTEXT_VERSION], [])
+
+
+dnl Usage: AM_GNU_GETTEXT_REQUIRE_VERSION([gettext-version])
+AC_DEFUN([AM_GNU_GETTEXT_REQUIRE_VERSION], [])
+
+# Copyright (C) 2002-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -35,7 +422,7 @@ AC_DEFUN([AM_AUTOMAKE_VERSION],
 [am__api_version='1.16'
 dnl Some users find AM_AUTOMAKE_VERSION and mistake it for a way to
 dnl require some minimum version.  Point them to the right macro.
-m4_if([$1], [1.16.1], [],
+m4_if([$1], [1.16.5], [],
       [AC_FATAL([Do not call $0, use AM_INIT_AUTOMAKE([$1]).])])dnl
 ])
 
@@ -51,12 +438,12 @@ m4_define([_AM_AUTOCONF_VERSION], [])
 # Call AM_AUTOMAKE_VERSION and AM_AUTOMAKE_VERSION so they can be traced.
 # This function is AC_REQUIREd by AM_INIT_AUTOMAKE.
 AC_DEFUN([AM_SET_CURRENT_AUTOMAKE_VERSION],
-[AM_AUTOMAKE_VERSION([1.16.1])dnl
+[AM_AUTOMAKE_VERSION([1.16.5])dnl
 m4_ifndef([AC_AUTOCONF_VERSION],
   [m4_copy([m4_PACKAGE_VERSION], [AC_AUTOCONF_VERSION])])dnl
 _AM_AUTOCONF_VERSION(m4_defn([AC_AUTOCONF_VERSION]))])
 
-# Copyright (C) 2011-2018 Free Software Foundation, Inc.
+# Copyright (C) 2011-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -118,7 +505,7 @@ AC_SUBST([AR])dnl
 
 # AM_AUX_DIR_EXPAND                                         -*- Autoconf -*-
 
-# Copyright (C) 2001-2018 Free Software Foundation, Inc.
+# Copyright (C) 2001-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -170,7 +557,7 @@ am_aux_dir=`cd "$ac_aux_dir" && pwd`
 
 # AM_CONDITIONAL                                            -*- Autoconf -*-
 
-# Copyright (C) 1997-2018 Free Software Foundation, Inc.
+# Copyright (C) 1997-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -201,7 +588,7 @@ AC_CONFIG_COMMANDS_PRE(
 Usually this means the macro was only invoked conditionally.]])
 fi])])
 
-# Copyright (C) 1999-2018 Free Software Foundation, Inc.
+# Copyright (C) 1999-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -392,7 +779,7 @@ _AM_SUBST_NOTMAKE([am__nodep])dnl
 
 # Generate code to set up dependency tracking.              -*- Autoconf -*-
 
-# Copyright (C) 1999-2018 Free Software Foundation, Inc.
+# Copyright (C) 1999-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -431,7 +818,9 @@ AC_DEFUN([_AM_OUTPUT_DEPENDENCY_COMMANDS],
   done
   if test $am_rc -ne 0; then
     AC_MSG_FAILURE([Something went wrong bootstrapping makefile fragments
-    for automatic dependency tracking.  Try re-running configure with the
+    for automatic dependency tracking.  If GNU make was not used, consider
+    re-running the configure script with MAKE="gmake" (or whatever is
+    necessary).  You can also try re-running configure with the
     '--disable-dependency-tracking' option to at least be able to build
     the package (albeit without support for automatic dependency tracking).])
   fi
@@ -458,7 +847,7 @@ AC_DEFUN([AM_OUTPUT_DEPENDENCY_COMMANDS],
 
 # Do all the work for Automake.                             -*- Autoconf -*-
 
-# Copyright (C) 1996-2018 Free Software Foundation, Inc.
+# Copyright (C) 1996-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -486,6 +875,10 @@ m4_defn([AC_PROG_CC])
 # release and drop the old call support.
 AC_DEFUN([AM_INIT_AUTOMAKE],
 [AC_PREREQ([2.65])dnl
+m4_ifdef([_$0_ALREADY_INIT],
+  [m4_fatal([$0 expanded multiple times
+]m4_defn([_$0_ALREADY_INIT]))],
+  [m4_define([_$0_ALREADY_INIT], m4_expansion_stack)])dnl
 dnl Autoconf wants to disallow AM_ names.  We explicitly allow
 dnl the ones we care about.
 m4_pattern_allow([^AM_[A-Z]+FLAGS$])dnl
@@ -522,7 +915,7 @@ m4_ifval([$3], [_AM_SET_OPTION([no-define])])dnl
 [_AM_SET_OPTIONS([$1])dnl
 dnl Diagnose old-style AC_INIT with new-style AM_AUTOMAKE_INIT.
 m4_if(
-  m4_ifdef([AC_PACKAGE_NAME], [ok]):m4_ifdef([AC_PACKAGE_VERSION], [ok]),
+  m4_ifset([AC_PACKAGE_NAME], [ok]):m4_ifset([AC_PACKAGE_VERSION], [ok]),
   [ok:ok],,
   [m4_fatal([AC_INIT should be called with package and version arguments])])dnl
  AC_SUBST([PACKAGE], ['AC_PACKAGE_TARNAME'])dnl
@@ -574,6 +967,20 @@ AC_PROVIDE_IFELSE([AC_PROG_OBJCXX],
 		  [m4_define([AC_PROG_OBJCXX],
 			     m4_defn([AC_PROG_OBJCXX])[_AM_DEPENDENCIES([OBJCXX])])])dnl
 ])
+# Variables for tags utilities; see am/tags.am
+if test -z "$CTAGS"; then
+  CTAGS=ctags
+fi
+AC_SUBST([CTAGS])
+if test -z "$ETAGS"; then
+  ETAGS=etags
+fi
+AC_SUBST([ETAGS])
+if test -z "$CSCOPE"; then
+  CSCOPE=cscope
+fi
+AC_SUBST([CSCOPE])
+
 AC_REQUIRE([AM_SILENT_RULES])dnl
 dnl The testsuite driver may need to know about EXEEXT, so add the
 dnl 'am__EXEEXT' conditional if _AM_COMPILER_EXEEXT was seen.  This
@@ -655,7 +1062,7 @@ for _am_header in $config_headers :; do
 done
 echo "timestamp for $_am_arg" >`AS_DIRNAME(["$_am_arg"])`/stamp-h[]$_am_stamp_count])
 
-# Copyright (C) 2001-2018 Free Software Foundation, Inc.
+# Copyright (C) 2001-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -676,7 +1083,7 @@ if test x"${install_sh+set}" != xset; then
 fi
 AC_SUBST([install_sh])])
 
-# Copyright (C) 2003-2018 Free Software Foundation, Inc.
+# Copyright (C) 2003-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -697,7 +1104,7 @@ AC_SUBST([am__leading_dot])])
 
 # Check to see how 'make' treats includes.	            -*- Autoconf -*-
 
-# Copyright (C) 2001-2018 Free Software Foundation, Inc.
+# Copyright (C) 2001-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -740,7 +1147,7 @@ AC_SUBST([am__quote])])
 
 # Fake the existence of programs that GNU maintainers use.  -*- Autoconf -*-
 
-# Copyright (C) 1997-2018 Free Software Foundation, Inc.
+# Copyright (C) 1997-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -761,12 +1168,7 @@ AC_DEFUN([AM_MISSING_HAS_RUN],
 [AC_REQUIRE([AM_AUX_DIR_EXPAND])dnl
 AC_REQUIRE_AUX_FILE([missing])dnl
 if test x"${MISSING+set}" != xset; then
-  case $am_aux_dir in
-  *\ * | *\	*)
-    MISSING="\${SHELL} \"$am_aux_dir/missing\"" ;;
-  *)
-    MISSING="\${SHELL} $am_aux_dir/missing" ;;
-  esac
+  MISSING="\${SHELL} '$am_aux_dir/missing'"
 fi
 # Use eval to expand $SHELL
 if eval "$MISSING --is-lightweight"; then
@@ -779,7 +1181,7 @@ fi
 
 # Helper functions for option handling.                     -*- Autoconf -*-
 
-# Copyright (C) 2001-2018 Free Software Foundation, Inc.
+# Copyright (C) 2001-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -808,7 +1210,7 @@ AC_DEFUN([_AM_SET_OPTIONS],
 AC_DEFUN([_AM_IF_OPTION],
 [m4_ifset(_AM_MANGLE_OPTION([$1]), [$2], [$3])])
 
-# Copyright (C) 1999-2018 Free Software Foundation, Inc.
+# Copyright (C) 1999-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -855,7 +1257,7 @@ AC_LANG_POP([C])])
 # For backward compatibility.
 AC_DEFUN_ONCE([AM_PROG_CC_C_O], [AC_REQUIRE([AC_PROG_CC])])
 
-# Copyright (C) 2001-2018 Free Software Foundation, Inc.
+# Copyright (C) 2001-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -874,7 +1276,7 @@ AC_DEFUN([AM_RUN_LOG],
 
 # Check to make sure that the build environment is sane.    -*- Autoconf -*-
 
-# Copyright (C) 1996-2018 Free Software Foundation, Inc.
+# Copyright (C) 1996-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -955,7 +1357,7 @@ AC_CONFIG_COMMANDS_PRE(
 rm -f conftest.file
 ])
 
-# Copyright (C) 2009-2018 Free Software Foundation, Inc.
+# Copyright (C) 2009-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -1015,7 +1417,7 @@ AC_SUBST([AM_BACKSLASH])dnl
 _AM_SUBST_NOTMAKE([AM_BACKSLASH])dnl
 ])
 
-# Copyright (C) 2001-2018 Free Software Foundation, Inc.
+# Copyright (C) 2001-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -1043,7 +1445,7 @@ fi
 INSTALL_STRIP_PROGRAM="\$(install_sh) -c -s"
 AC_SUBST([INSTALL_STRIP_PROGRAM])])
 
-# Copyright (C) 2006-2018 Free Software Foundation, Inc.
+# Copyright (C) 2006-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -1062,7 +1464,7 @@ AC_DEFUN([AM_SUBST_NOTMAKE], [_AM_SUBST_NOTMAKE($@)])
 
 # Check how to create a tarball.                            -*- Autoconf -*-
 
-# Copyright (C) 2004-2018 Free Software Foundation, Inc.
+# Copyright (C) 2004-2021 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
