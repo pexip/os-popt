@@ -1,0 +1,26 @@
+From: Håvard F. Aasen <havard.f.aasen@pfft.no>
+Date: Sun, 18 Aug 2024 16:18:30 +0200
+Subject: Instruct man(1) to run the 'tbl' preprocessor
+
+This is needed to get set the macro 'TW' with the table width. This was
+a new warning in groff 1.23.0
+
+Can be tested with the command:
+LC_ALL=C.UTF-8 MANROFFSEQ='' MANWIDTH=80 \
+    man --warnings -E UTF-8 -l -Tutf8 -Z popt.3 >/dev/null
+
+Forwarded: https://github.com/rpm-software-management/popt/pull/119
+---
+ popt.3 | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/popt.3 b/popt.3
+index 8a76d04..1cf6c60 100644
+--- a/popt.3
++++ b/popt.3
+@@ -1,3 +1,5 @@
++'\" t
++.
+ .TH POPT 3  "June 30, 1998" "" "Linux Programmer's Manual"
+ .SH NAME
+ popt \- Parse command line options
