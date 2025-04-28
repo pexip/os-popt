@@ -1,4 +1,4 @@
-From: =?utf-8?b?IkjDpXZhcmQgRi4gQWFzZW4i?= <havard.f.aasen@pfft.no>
+From: Håvard F. Aasen <havard.f.aasen@pfft.no>
 Date: Tue, 27 Sep 2022 20:14:08 +0200
 Subject: [PATCH] tests: Fix reporting of test failures
 
@@ -10,6 +10,7 @@ If any test fails, we will exit with status code 2. The entire testsuite
 will continue to run, even after a test has failed.
 
 Forwarded: https://github.com/rpm-software-management/popt/pull/83
+Applied-Upstream: https://github.com/rpm-software-management/popt/commit/ce80a8045c70db57084008a3fd98a7f0ba79544e
 ---
  tests/testit.sh | 10 +++++++++-
  1 file changed, 9 insertions(+), 1 deletion(-)

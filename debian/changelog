@@ -1,3 +1,16 @@
+popt (1.19+dfsg-2) unstable; urgency=medium
+
+  * Support the noudeb build profile.
+    Thanks to Helmut Grohne for the patch. Closes: #1024950
+  * Document that reporting of test failures patch has been applied upstream.
+  * Add patch for documenting poptgetContext() flags. Closes: #666431
+  * Update Standards-Version to 4.7.0, no changes needed.
+  * Update copyright year for self.
+  * Create patch to fix man-page with 'tbl' preprocessor.
+  * Add license paragraph for a translated file.
+
+ -- Håvard F. Aasen <havard.f.aasen@pfft.no>  Sun, 18 Aug 2024 22:32:34 +0200
+
 popt (1.19+dfsg-1+pexip24u3) pexip-bookworm; urgency=medium
 
   * New versioning scheme

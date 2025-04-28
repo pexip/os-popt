@@ -1,1 +1,3 @@
 fix-reporting-of-test-failures.patch
+document-flags-used-in-poptGetContext.patch
+instruct-man-to-run-the-tbl-preprocessor.patch
